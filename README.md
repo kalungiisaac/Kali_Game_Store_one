@@ -43,7 +43,7 @@ A modern web application for browsing, searching, and managing your video game c
    
    Create a `.env` file in the root directory:
    ```
-   VITE_RAWG_API_KEY=your_rawg_api_key_here
+   VITE_RAWG_API_KEY=rawg_api
    ```
 
 4. **(Optional) Setup IGDB proxy server**
