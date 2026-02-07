@@ -4,7 +4,7 @@ const cors = require('cors');
 const axios = require('axios');
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Middleware
 app.use(cors());
@@ -79,7 +79,42 @@ app.get('/health', (req, res) => {
     });
 });
 
+// ── FreeToGame proxy (avoids browser CORS) ──
+app.get('/api/freetogame/games', async (req, res) => {
+    try {
+        const { platform, category } = req.query;
+        let url = `https://www.freetogame.com/api/games?platform=${platform || 'all'}`;
+        if (category) url += `&category=${category}`;
+        const response = await axios.get(url);
+        res.json(response.data);
+    } catch (error) {
+        console.error('FreeToGame proxy error:', error.message);
+        res.status(500).json({ error: 'FreeToGame API request failed' });
+    }
+});
+
+app.get('/api/freetogame/game', async (req, res) => {
+    try {
+        const { id } = req.query;
+        const response = await axios.get(`https://www.freetogame.com/api/game?id=${id}`);
+        res.json(response.data);
+    } catch (error) {
+        console.error('FreeToGame game detail error:', error.message);
+        res.status(500).json({ error: 'FreeToGame detail request failed' });
+    }
+});
+
+// Serve static frontend in production (Vite build output)
+const path = require('path');
+const distPath = path.join(__dirname, '..', 'dist');
+app.use(express.static(distPath));
+
+// SPA fallback — serve index.html for any route not matched above
+app.get('*', (req, res) => {
+    res.sendFile(path.join(distPath, 'index.html'));
+});
+
 app.listen(PORT, () => {
-    console.log(`IGDB Proxy Server running on http://localhost:${PORT}`);
-    console.log('Make sure to set up your .env file with IGDB credentials!');
+    console.log(`Game Store Server running on http://localhost:${PORT}`);
+    console.log(`Serving static files from ${distPath}`);
 });

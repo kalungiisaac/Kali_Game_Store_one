@@ -1,6 +1,7 @@
 // main.js
 import { Wishlist } from './wishlist.js';
 import { renderGames, renderGamesWithDownload, renderWishlist, renderGameDetails, renderDeals, renderFreeGames, renderRecommendations, renderComparisonSlot, renderComparisonTable } from './ui.js';
+// renderDeals and renderFreeGames are now also used on the home page
 import api from './api.js';
 import { gameFilter } from './filter.js';
 import { gameComparison } from './comparison.js';
@@ -143,213 +144,226 @@ function setActiveNavLink() {
     });
 }
 
+// Helper: show loading spinner inside a container
+function showLoading(containerId, message = 'Loading...') {
+    const el = document.getElementById(containerId);
+    if (el) el.innerHTML = `<div class="loading"><div class="spinner"></div><p>${message}</p></div>`;
+}
+
+// Helper: show error inside a container
+function showError(containerId, error) {
+    const el = document.getElementById(containerId);
+    if (el) el.innerHTML = `
+        <div class="error-container" style="text-align:center; padding:2rem; background:rgba(255,255,255,0.05); border-radius:8px; border:1px solid rgba(233,69,96,0.3);">
+            <p style="color:#ff6b6b; font-size:1rem; margin-bottom:0.8rem;">⚠️ Could not load this section</p>
+            <button class="btn" onclick="location.reload()" style="padding:0.5rem 1.5rem;">🔄 Retry</button>
+        </div>`;
+}
+
+// Helper: safely load a section — fetches data, renders, shows error on failure
+async function loadSection(containerId, fetchFn, renderFn) {
+    showLoading(containerId);
+    try {
+        const data = await fetchFn();
+        if (data && data.length > 0) {
+            renderFn(data, containerId);
+        } else {
+            const el = document.getElementById(containerId);
+            if (el) el.innerHTML = `
+                <div class="empty-state" style="text-align:center; padding:2rem; background:rgba(255,255,255,0.05); border-radius:8px;">
+                    <p style="color:rgba(255,255,255,0.6);">No games found for this section right now.</p>
+                    <button class="btn btn-secondary" onclick="location.reload()" style="margin-top:0.5rem;">Retry</button>
+                </div>`;
+        }
+    } catch (err) {
+        console.error(`Section ${containerId} failed:`, err);
+        showError(containerId, err);
+    }
+}
+
 // Browse page initialization
 async function initBrowsePage() {
     document.body.id = 'index-page';
     
+    const platformIds = '4,18,187,1,186,7,3,21';
+    const today = new Date();
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(today.getMonth() - 3);
+    const todayStr = today.toISOString().split('T')[0];
+    const threeMonthsFuture = new Date();
+    threeMonthsFuture.setMonth(today.getMonth() + 3);
+    const futureStr = threeMonthsFuture.toISOString().split('T')[0];
+
+    // Show loading states
+    showLoading('games-container', 'Loading popular games...');
+    showLoading('upcoming-container', 'Loading upcoming releases...');
+
+    // ── FEATURED CAROUSEL ──
     try {
-        // Load featured games carousel - AAA High Quality Games
-        // Fetch specific popular AAA titles for the featured section
-        const aaaGameNames = [
-            'The Witcher 3: Wild Hunt',
-            'Grand Theft Auto V', 
-            'Red Dead Redemption 2',
-            'God of War',
-            'Elden Ring',
-            'Cyberpunk 2077',
-            'Uncharted 4',
-            'Need for Speed Heat',
-            'Forza Horizon 5',
-            'Horizon Zero Dawn',
-            'The Last of Us',
-            'Spider-Man',
-            'Assassin\'s Creed Valhalla',
-            'Far Cry 6',
-            'Call of Duty: Modern Warfare'
-        ];
-        
-        // Fetch AAA games for all platforms including PlayStation
-        const featuredGames = [];
-        
-        // Fetch high-rated games across all platforms (PC, PlayStation, Xbox, Nintendo, Mobile)
-        // Platform IDs: 4=PC, 18=PS4, 187=PS5, 1=Xbox One, 186=Xbox Series X, 7=Switch, 3=iOS, 21=Android
-        const platformIds = '4,18,187,1,186,7,3,21'; // PC, PS4, PS5, Xbox One, Xbox Series, Switch, iOS, Android
-        
-        // First try to get games with high metacritic scores
-        const highRatedData = await api.fetchGames({ 
-            page_size: 20, 
+        const featuredData = await api.fetchGames({ 
+            page_size: 15, 
             ordering: '-metacritic',
             metacritic: '85,100',
             platforms: platformIds
         });
-        
-        if (highRatedData.results && highRatedData.results.length > 0) {
-            featuredGames.push(...highRatedData.results);
-        }
-        
-        // Add PlayStation exclusive/popular games
-        const psGamesData = await api.fetchGames({ 
-            page_size: 10, 
-            ordering: '-metacritic,-rating',
-            platforms: '18,187', // PS4 and PS5
-            metacritic: '80,100'
-        });
-        
-        if (psGamesData.results) {
-            for (const game of psGamesData.results) {
-                if (!featuredGames.find(g => g.id === game.id)) {
-                    featuredGames.push(game);
-                }
-            }
-        }
-        
-        // If we don't have enough, add top rated games from all platforms
-        if (featuredGames.length < 15) {
-            const topRatedData = await api.fetchGames({ 
-                page_size: 15, 
-                ordering: '-rating',
-                platforms: platformIds
-            });
-            if (topRatedData.results) {
-                for (const game of topRatedData.results) {
-                    if (!featuredGames.find(g => g.id === game.id)) {
-                        featuredGames.push(game);
-                    }
-                }
-            }
-        }
-        
-        // Sort by metacritic to show best games first
+        const featuredGames = (featuredData.results || []).filter(g => g.background_image);
         featuredGames.sort((a, b) => (b.metacritic || 0) - (a.metacritic || 0));
         
         if (featuredGames.length > 0) {
             let currentIndex = 0;
-            
-            // Add slide indicators
             const featuredSection = document.getElementById('featured-game');
-            const indicatorHtml = `<div class="slide-indicator">${featuredGames.map((_, i) => 
-                `<span class="slide-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`
-            ).join('')}</div>`;
-            featuredSection.insertAdjacentHTML('beforeend', indicatorHtml);
+            const dots = featuredGames.slice(0, 10);
+            featuredSection.insertAdjacentHTML('beforeend',
+                `<div class="slide-indicator">${dots.map((_, i) => 
+                    `<span class="slide-dot ${i === 0 ? 'active' : ''}" data-index="${i}"></span>`
+                ).join('')}</div>`);
             
-            // Function to update featured game display
             function updateFeaturedGame(index) {
-                const featured = featuredGames[index];
-                const titleEl = document.getElementById('featured-title');
-                const platformsEl = document.getElementById('featured-platforms');
-                const linkEl = document.getElementById('featured-link');
+                const f = featuredGames[index];
                 const bgEl = document.getElementById('featured-bg');
-                const downloadBtn = document.getElementById('featured-download');
-                const trailerBtn = document.getElementById('featured-trailer');
                 const contentEl = document.querySelector('.featured-content');
-                
-                // Fade out
                 if (bgEl) bgEl.style.opacity = '0';
                 if (contentEl) contentEl.style.opacity = '0';
-                
                 setTimeout(() => {
-                    if (titleEl) titleEl.textContent = featured.name;
-                    if (platformsEl) {
-                        const platforms = featured.parent_platforms?.map(p => p.platform.name).join(', ') || 'PC, PS5, Xbox';
-                        platformsEl.textContent = `Available Now on ${platforms}`;
-                    }
-                    if (linkEl) linkEl.href = `game-details.html?id=${featured.id}`;
-                    if (bgEl && featured.background_image) {
-                        bgEl.style.backgroundImage = `url('${featured.background_image}')`;
-                    }
-                    if (downloadBtn) {
-                        downloadBtn.onclick = () => window.location.href = `game-details.html?id=${featured.id}`;
-                    }
-                    if (trailerBtn) {
-                        trailerBtn.onclick = () => window.openTrailer(featured.name);
-                    }
-                    
-                    // Update indicators
-                    document.querySelectorAll('.slide-dot').forEach((dot, i) => {
-                        dot.classList.toggle('active', i === index);
-                    });
-                    
-                    // Fade in
+                    const titleEl = document.getElementById('featured-title');
+                    const platformsEl = document.getElementById('featured-platforms');
+                    const linkEl = document.getElementById('featured-link');
+                    const trailerBtn = document.getElementById('featured-trailer');
+                    if (titleEl) titleEl.textContent = f.name;
+                    if (platformsEl) platformsEl.textContent = `Available on ${f.parent_platforms?.map(p => p.platform.name).join(', ') || 'Multiple Platforms'}`;
+                    if (linkEl) linkEl.href = `game-details.html?id=${f.id}`;
+                    if (bgEl && f.background_image) bgEl.style.backgroundImage = `url('${f.background_image}')`;
+                    if (trailerBtn) trailerBtn.onclick = () => window.openTrailer(f.name);
+                    document.querySelectorAll('.slide-dot').forEach((d, i) => d.classList.toggle('active', i === index));
                     if (bgEl) bgEl.style.opacity = '1';
                     if (contentEl) contentEl.style.opacity = '1';
                 }, 400);
             }
-            
-            // Initial display
             updateFeaturedGame(0);
-            
-            // Auto-rotate every 5 seconds
-            setInterval(() => {
-                currentIndex = (currentIndex + 1) % featuredGames.length;
-                updateFeaturedGame(currentIndex);
-            }, 5000);
-            
-            // Click on indicators to change slide
-            document.querySelectorAll('.slide-dot').forEach(dot => {
-                dot.addEventListener('click', (e) => {
-                    currentIndex = parseInt(e.target.dataset.index);
-                    updateFeaturedGame(currentIndex);
-                });
+            setInterval(() => { currentIndex = (currentIndex + 1) % Math.min(featuredGames.length, 10); updateFeaturedGame(currentIndex); }, 5000);
+            document.querySelectorAll('.slide-dot').forEach(dot => dot.addEventListener('click', (e) => { currentIndex = parseInt(e.target.dataset.index); updateFeaturedGame(currentIndex); }));
+        }
+    } catch (e) { console.error('Featured carousel error:', e); }
+
+    // ── PAGINATION STATE ──
+    let currentPage = 1;
+    const gamesPerPage = 21; // 7 rows × 3 columns
+    let totalGames = 0;
+    let totalPages = 1;
+    
+    // Function to load games for a specific page
+    async function loadGamesPage(page) {
+        currentPage = page;
+        showLoading('games-container', 'Loading games...');
+        
+        try {
+            const data = await api.fetchGames({ 
+                ordering: '-metacritic,-rating,-added', 
+                page_size: gamesPerPage,
+                page: page,
+                platforms: platformIds
             });
+            
+            totalGames = data.count || 0;
+            totalPages = Math.ceil(totalGames / gamesPerPage);
+            
+            if (data.results && data.results.length > 0) {
+                renderGames(data.results, 'games-container');
+                updatePagination();
+                
+                // Update games count
+                const countEl = document.getElementById('games-count');
+                if (countEl) {
+                    const start = (currentPage - 1) * gamesPerPage + 1;
+                    const end = Math.min(currentPage * gamesPerPage, totalGames);
+                    countEl.textContent = `Showing ${start}-${end} of ${totalGames.toLocaleString()} games`;
+                }
+                
+                // Scroll to games section
+                if (page > 1) {
+                    document.getElementById('games-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        } catch (err) {
+            console.error('Failed to load games:', err);
+            showError('games-container', err);
         }
-
-        // Load new releases - prioritize high rated AAA games across all platforms
-        const today = new Date();
-        const lastMonth = new Date();
-        lastMonth.setMonth(today.getMonth() - 3); // Last 3 months for more results
-        
-        const newReleasesData = await api.fetchGames({
-            dates: `${lastMonth.toISOString().split('T')[0]},${today.toISOString().split('T')[0]}`,
-            ordering: '-metacritic,-rating', // Sort by metacritic then rating
-            page_size: 12,
-            platforms: '4,18,187,1,186,7,3,21', // PC, PS4, PS5, Xbox One, Xbox Series, Switch, iOS, Android
-            metacritic: '70,100' // Only games with good scores
-        });
-        
-        // Sort by metacritic/rating to show best first
-        let newReleases = newReleasesData.results || [];
-        newReleases.sort((a, b) => {
-            const scoreA = (a.metacritic || 0) + (a.rating || 0) * 20;
-            const scoreB = (b.metacritic || 0) + (b.rating || 0) * 20;
-            return scoreB - scoreA;
-        });
-        
-        // Hide section if no new releases found
-        const newReleasesSection = document.getElementById('new-releases-container')?.closest('section');
-        if (newReleases.length === 0) {
-            if (newReleasesSection) newReleasesSection.style.display = 'none';
-        } else {
-            if (newReleasesSection) newReleasesSection.style.display = 'block';
-            renderGamesWithDownload(newReleases.slice(0, 6), 'new-releases-container');
-        }
-
-        // Load popular games - AAA quality games with high ratings across all platforms
-        const popularData = await api.fetchGames({ 
-            ordering: '-metacritic,-rating,-added', 
-            page_size: 12,
-            platforms: '4,18,187,1,186,7,3,21', // PC, PS4, PS5, Xbox One, Xbox Series, Switch, iOS, Android
-            metacritic: '80,100' // High metacritic scores
-        });
-        
-        // Sort by combined score to ensure best games first
-        let popularGames = popularData.results || [];
-        popularGames.sort((a, b) => {
-            const scoreA = (a.metacritic || 0) + (a.rating || 0) * 20 + (a.ratings_count || 0) / 1000;
-            const scoreB = (b.metacritic || 0) + (b.rating || 0) * 20 + (b.ratings_count || 0) / 1000;
-            return scoreB - scoreA;
-        });
-        
-        renderGamesWithDownload(popularGames.slice(0, 6), 'games-container');
-    } catch (error) {
-        console.error('Failed to load games:', error);
-        document.getElementById('games-container').innerHTML = `
-            <div class="error-container">
-                <h3>Failed to load games</h3>
-                <p>Please check your API key or try again later.</p>
-                <button class="btn" onclick="location.reload()">Retry</button>
-            </div>
-        `;
     }
+    
+    // Update pagination UI
+    function updatePagination() {
+        const prevBtn = document.getElementById('prev-page');
+        const nextBtn = document.getElementById('next-page');
+        const pageNumbers = document.getElementById('page-numbers');
+        
+        if (!prevBtn || !nextBtn || !pageNumbers) return;
+        
+        prevBtn.disabled = currentPage <= 1;
+        nextBtn.disabled = currentPage >= totalPages;
+        
+        // Generate page numbers
+        let pages = [];
+        const maxVisible = 5;
+        
+        if (totalPages <= maxVisible + 2) {
+            for (let i = 1; i <= Math.min(totalPages, 10); i++) pages.push(i);
+        } else {
+            pages.push(1);
+            
+            let start = Math.max(2, currentPage - 1);
+            let end = Math.min(totalPages - 1, currentPage + 1);
+            
+            if (currentPage <= 3) {
+                end = Math.min(totalPages - 1, 4);
+            } else if (currentPage >= totalPages - 2) {
+                start = Math.max(2, totalPages - 3);
+            }
+            
+            if (start > 2) pages.push('...');
+            for (let i = start; i <= end; i++) pages.push(i);
+            if (end < totalPages - 1) pages.push('...');
+            
+            pages.push(totalPages);
+        }
+        
+        pageNumbers.innerHTML = pages.map(p => {
+            if (p === '...') {
+                return '<span class="page-ellipsis">...</span>';
+            }
+            return `<button class="page-num ${p === currentPage ? 'active' : ''}" data-page="${p}">${p}</button>`;
+        }).join('');
+        
+        pageNumbers.querySelectorAll('.page-num').forEach(btn => {
+            btn.addEventListener('click', () => {
+                loadGamesPage(parseInt(btn.dataset.page));
+            });
+        });
+    }
+    
+    // Setup pagination buttons
+    document.getElementById('prev-page')?.addEventListener('click', () => {
+        if (currentPage > 1) loadGamesPage(currentPage - 1);
+    });
+    
+    document.getElementById('next-page')?.addEventListener('click', () => {
+        if (currentPage < totalPages) loadGamesPage(currentPage + 1);
+    });
+    
+    // ── LOAD INITIAL DATA ──
+    await Promise.allSettled([
+        loadGamesPage(1),
+
+        // Upcoming Releases (12 games)
+        loadSection('upcoming-container', async () => {
+            const data = await api.fetchGames({
+                dates: `${todayStr},${futureStr}`,
+                ordering: 'released',
+                page_size: 12,
+                platforms: platformIds
+            });
+            return data.results || [];
+        }, renderGames)
+    ]);
     
     // Setup search
     const searchBtn = document.getElementById('search-btn');
@@ -374,6 +388,70 @@ async function initBrowsePage() {
     
     applyFiltersBtn?.addEventListener('click', applyFilters);
     clearFiltersBtn?.addEventListener('click', clearFilters);
+}
+
+// Apply URL parameters for "See All" links and deep links
+async function applyUrlFilters() {
+    const params = new URLSearchParams(window.location.search);
+    const sortParam = params.get('sort');
+    const genreParam = params.get('genre');
+    const genreIdParam = params.get('genreId');
+    const searchParam = params.get('search');
+
+    if (!sortParam && !genreParam && !genreIdParam && !searchParam) return;
+
+    if (searchParam) {
+        const searchInput = document.getElementById('search-input');
+        if (searchInput) {
+            searchInput.value = searchParam;
+            await handleSearch();
+            document.getElementById('games-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            return;
+        }
+    }
+
+    const sortMap = {
+        rating: '-rating',
+        popular: '-added',
+        newest: '-released',
+        released: '-released',
+        name: 'name'
+    };
+
+    if (sortParam) {
+        const sortValue = sortMap[sortParam] || sortParam;
+        const sortFilter = document.getElementById('sort-filter');
+        if (sortFilter) sortFilter.value = sortValue;
+    }
+
+    let genreId = null;
+    if (genreIdParam && !Number.isNaN(parseInt(genreIdParam, 10))) {
+        genreId = parseInt(genreIdParam, 10);
+    }
+
+    const genreMap = {
+        action: 4,
+        rpg: 5,
+        'role-playing-games-rpg': 5,
+        indie: 51,
+        strategy: 10,
+        shooter: 2
+    };
+
+    if (!genreId && genreParam) {
+        const normalized = genreParam.toLowerCase();
+        genreId = genreMap[normalized] || null;
+    }
+
+    if (genreId) {
+        const genreCheckbox = document.querySelector(`#genre-filters input[data-genre="${genreId}"]`);
+        if (genreCheckbox) genreCheckbox.checked = true;
+    }
+
+    if (sortParam || genreId) {
+        await applyFilters();
+        document.getElementById('games-container')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
 }
 
 // Apply filters
@@ -468,22 +546,124 @@ async function initDetailPage() {
         return;
     }
     
-    const game = await api.getGameDetails(gameId);
-    if (!game) {
+    // Show loading state
+    const titleEl = document.getElementById('game-title');
+    if (titleEl) titleEl.textContent = 'Loading...';
+    
+    try {
+        const game = await api.getGameDetails(gameId);
+        if (!game) {
+            document.querySelector('.game-detail').innerHTML = `
+                <div class="error-container">
+                    <h2>Game Not Found</h2>
+                    <p>We couldn't find the requested game. Please return to <a href="index.html">browse page</a></p>
+                </div>
+            `;
+            return;
+        }
+        
+        renderGameDetails(game);
+        updateWishlistButton(game);
+        
+        // Load screenshots from API
+        try {
+            const screenshots = await api.getGameScreenshots(gameId);
+            if (screenshots.length > 0) {
+                const container = document.getElementById('screenshots-container');
+                if (container) {
+                    container.innerHTML = screenshots.slice(0, 5).map((s, index) => `
+                        <div class="screenshot-item" data-index="${index}" data-full="${s.image}">
+                            <img src="${s.image}" alt="Game screenshot" loading="lazy">
+                        </div>
+                    `).join('');
+                    
+                    // Setup screenshot modal
+                    setupScreenshotModal(screenshots.slice(0, 5));
+                }
+            }
+        } catch (ssError) {
+            console.warn('Screenshots not available:', ssError);
+        }
+        
+        // Load similar game recommendations
+        await loadRecommendations(game);
+    } catch (error) {
+        console.error('Failed to load game details:', error);
         document.querySelector('.game-detail').innerHTML = `
             <div class="error-container">
-                <h2>Game Not Found</h2>
-                <p>We couldn't find the requested game. Please return to <a href="index.html">browse page</a></p>
+                <h2>❌ Failed to Load Game</h2>
+                <p>${error.message || 'Network error. Please try again.'}</p>
+                <a href="index.html" class="btn">Return to Browse</a>
+                <button class="btn btn-secondary" onclick="location.reload()">Retry</button>
             </div>
         `;
-        return;
+    }
+}
+
+// Setup screenshot modal for viewing full-size screenshots
+function setupScreenshotModal(screenshots) {
+    const modal = document.getElementById('screenshot-modal');
+    const modalImg = document.getElementById('modal-screenshot');
+    const closeBtn = document.getElementById('screenshot-close');
+    const prevBtn = document.getElementById('modal-prev');
+    const nextBtn = document.getElementById('modal-next');
+    const currentSpan = document.getElementById('screenshot-current');
+    const totalSpan = document.getElementById('screenshot-total');
+    
+    if (!modal || !modalImg) return;
+    
+    let currentIndex = 0;
+    totalSpan.textContent = screenshots.length;
+    
+    function showScreenshot(index) {
+        currentIndex = index;
+        if (currentIndex < 0) currentIndex = screenshots.length - 1;
+        if (currentIndex >= screenshots.length) currentIndex = 0;
+        
+        modalImg.src = screenshots[currentIndex].image;
+        currentSpan.textContent = currentIndex + 1;
     }
     
-    renderGameDetails(game);
-    updateWishlistButton(game);
+    function openModal(index) {
+        showScreenshot(index);
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
     
-    // Load similar game recommendations
-    await loadRecommendations(game);
+    function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+    
+    // Click on screenshot thumbnails
+    document.querySelectorAll('.screenshot-item').forEach((item, index) => {
+        item.addEventListener('click', () => openModal(index));
+    });
+    
+    // Also allow clicking the main hero image
+    const heroImg = document.getElementById('game-cover');
+    if (heroImg && screenshots.length > 0) {
+        heroImg.style.cursor = 'pointer';
+        heroImg.addEventListener('click', () => openModal(0));
+    }
+    
+    // Navigation
+    prevBtn?.addEventListener('click', () => showScreenshot(currentIndex - 1));
+    nextBtn?.addEventListener('click', () => showScreenshot(currentIndex + 1));
+    
+    // Close modal
+    closeBtn?.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    
+    // Keyboard navigation
+    document.addEventListener('keydown', (e) => {
+        if (!modal.classList.contains('active')) return;
+        if (e.key === 'Escape') closeModal();
+        if (e.key === 'ArrowLeft') showScreenshot(currentIndex - 1);
+        if (e.key === 'ArrowRight') showScreenshot(currentIndex + 1);
+    });
 }
 
 // Load similar game recommendations
@@ -517,6 +697,9 @@ function initWishlistPage() {
 async function initUpcomingPage() {
     document.body.id = 'upcoming-page';
     
+    const container = document.getElementById('games-container');
+    if (container) container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading upcoming games...</p></div>';
+    
     try {
         // Get upcoming games (next 6 months)
         const today = new Date();
@@ -543,13 +726,16 @@ async function initUpcomingPage() {
         }
     } catch (error) {
         console.error('Failed to load upcoming games:', error);
-        document.getElementById('games-container').innerHTML = `
-            <div class="error-container">
-                <h3>Failed to load upcoming games</h3>
-                <p>Please try again later.</p>
-                <button class="btn" onclick="location.reload()">Retry</button>
-            </div>
-        `;
+        const container = document.getElementById('games-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="error-container">
+                    <h3>❌ Failed to load upcoming games</h3>
+                    <p>${error.message || 'Please try again later.'}</p>
+                    <button class="btn" onclick="location.reload()">Retry</button>
+                </div>
+            `;
+        }
     }
 }
 
@@ -628,10 +814,10 @@ function loadPlatformFilters() {
 function loadGenreFilters() {
     const genres = [
         { id: 4, name: 'Action' },
-        { id: 51, name: 'RPG' },
+        { id: 5, name: 'RPG' },
         { id: 10, name: 'Strategy' },
-        { id: 5, name: 'Shooter' },
-        { id: 59, name: 'Indie' }
+        { id: 2, name: 'Shooter' },
+        { id: 51, name: 'Indie' }
     ];
     
     const container = document.getElementById('genre-filters');
@@ -651,11 +837,17 @@ async function initDealsPage() {
     const container = document.getElementById('deals-container');
     const storeFilter = document.getElementById('store-filter');
     
+    if (container) container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading deals...</p></div>';
+    
     // Load stores for filter
-    const stores = await api.getStores();
-    if (storeFilter && stores.length > 0) {
-        storeFilter.innerHTML = '<option value="">All Stores</option>' + 
-            stores.map(s => `<option value="${s.storeID}">${s.storeName}</option>`).join('');
+    try {
+        const stores = await api.getStores();
+        if (storeFilter && stores.length > 0) {
+            storeFilter.innerHTML = '<option value="">All Stores</option>' + 
+                stores.map(s => `<option value="${s.storeID}">${s.storeName}</option>`).join('');
+        }
+    } catch (e) {
+        console.warn('Could not load stores:', e);
     }
     
     // Load initial deals
@@ -673,7 +865,7 @@ async function loadDeals() {
     
     if (!container) return;
     
-    container.innerHTML = '<div class="loading"><p>Loading deals...</p></div>';
+    container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading deals...</p></div>';
     
     try {
         const storeID = storeFilter?.value || null;
@@ -692,8 +884,8 @@ async function loadDeals() {
         console.error('Failed to load deals:', error);
         container.innerHTML = `
             <div class="error-container">
-                <h3>Failed to load deals</h3>
-                <p>Please try again later.</p>
+                <h3>❌ Failed to load deals</h3>
+                <p>${error.message || 'Please try again later.'}</p>
                 <button class="btn" onclick="location.reload()">Retry</button>
             </div>
         `;
@@ -723,7 +915,7 @@ async function loadFreeGames(category = null) {
     const container = document.getElementById('free-games-container');
     if (!container) return;
     
-    container.innerHTML = '<div class="loading"><p>Loading free games...</p></div>';
+    container.innerHTML = '<div class="loading"><div class="spinner"></div><p>Loading free games...</p></div>';
     
     try {
         const games = await api.getFreeToPlayGames(category);
@@ -732,8 +924,8 @@ async function loadFreeGames(category = null) {
         console.error('Failed to load free games:', error);
         container.innerHTML = `
             <div class="error-container">
-                <h3>Failed to load free games</h3>
-                <p>Please try again later.</p>
+                <h3>❌ Failed to load free games</h3>
+                <p>${error.message || 'Please try again later.'}</p>
                 <button class="btn" onclick="location.reload()">Retry</button>
             </div>
         `;

@@ -1,167 +1,176 @@
 {
-  "sampleGames": [
+  "games": [
     {
       "id": 3498,
       "name": "Grand Theft Auto V",
-      "slug": "grand-theft-auto-v",
       "released": "2013-09-17",
       "background_image": "https://media.rawg.io/media/games/456/456dea5e1c7e3cd07060c14e96612001.jpg",
       "rating": 4.47,
       "metacritic": 92,
-      "playtime": 73,
       "genres": [
         { "id": 4, "name": "Action" },
         { "id": 3, "name": "Adventure" }
       ],
       "parent_platforms": [
-        { "platform": { "id": 4, "name": "PC" } },
-        { "platform": { "id": 187, "name": "PlayStation 5" } },
-        { "platform": { "id": 1, "name": "Xbox One" } }
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } },
+        { "platform": { "id": 3, "name": "Xbox" } }
       ],
-      "esrb_rating": { "id": 4, "name": "Mature" },
-      "description_raw": "Rockstar Games went bigger, since their decider of creating Grand Theft Auto 4 and Red Dead Redemption. They combined single-player story mode and multiplayer experience to create the huge game they wanted to make."
+      "description_raw": "Rockstar Games went bigger, extract from the acclaimed Grand Theft Auto series with Grand Theft Auto V."
     },
     {
       "id": 3328,
       "name": "The Witcher 3: Wild Hunt",
-      "slug": "the-witcher-3-wild-hunt",
       "released": "2015-05-18",
-      "background_image": "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6f2f85.jpg",
+      "background_image": "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6571c2.jpg",
       "rating": 4.66,
-      "metacritic": 93,
-      "playtime": 46,
+      "metacritic": 92,
       "genres": [
         { "id": 4, "name": "Action" },
         { "id": 5, "name": "RPG" }
       ],
       "parent_platforms": [
-        { "platform": { "id": 4, "name": "PC" } },
-        { "platform": { "id": 18, "name": "PlayStation 4" } },
-        { "platform": { "id": 1, "name": "Xbox One" } },
-        { "platform": { "id": 7, "name": "Nintendo Switch" } }
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } },
+        { "platform": { "id": 3, "name": "Xbox" } },
+        { "platform": { "id": 7, "name": "Nintendo" } }
       ],
-      "esrb_rating": { "id": 4, "name": "Mature" },
-      "description_raw": "The Witcher 3: Wild Hunt is an action role-playing game with a third-person perspective. Players control Geralt of Rivia, a monster slayer known as a Witcher."
+      "description_raw": "The Witcher: Wild Hunt is a story-driven, open world adventure game set in a visually stunning fantasy universe."
     },
     {
       "id": 4200,
       "name": "Portal 2",
-      "slug": "portal-2",
       "released": "2011-04-18",
-      "background_image": "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188571.jpg",
+      "background_image": "https://media.rawg.io/media/games/328/3283617cb7d75d67257fc58339188742.jpg",
       "rating": 4.61,
       "metacritic": 95,
-      "playtime": 11,
       "genres": [
         { "id": 7, "name": "Puzzle" },
-        { "id": 2, "name": "Shooter" }
+        { "id": 3, "name": "Adventure" }
       ],
       "parent_platforms": [
-        { "platform": { "id": 4, "name": "PC" } },
-        { "platform": { "id": 18, "name": "PlayStation 4" } },
-        { "platform": { "id": 1, "name": "Xbox One" } }
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } },
+        { "platform": { "id": 3, "name": "Xbox" } }
       ],
-      "esrb_rating": { "id": 2, "name": "Everyone 10+" },
-      "description_raw": "Portal 2 is a first-person puzzle game developed by Valve Corporation. It is a sequel to Portal (2007)."
+      "description_raw": "Portal 2 is a first-person puzzle-platform game developed by Valve Corporation."
     },
     {
-      "id": 28,
-      "name": "Red Dead Redemption 2",
-      "slug": "red-dead-redemption-2",
-      "released": "2018-10-26",
-      "background_image": "https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",
-      "rating": 4.59,
-      "metacritic": 97,
-      "playtime": 20,
+      "id": 5286,
+      "name": "Tomb Raider (2013)",
+      "released": "2013-03-05",
+      "background_image": "https://media.rawg.io/media/games/021/021c4e21a1824d2526f925eff6324653.jpg",
+      "rating": 4.05,
+      "metacritic": 86,
       "genres": [
         { "id": 4, "name": "Action" },
         { "id": 3, "name": "Adventure" }
       ],
       "parent_platforms": [
-        { "platform": { "id": 4, "name": "PC" } },
-        { "platform": { "id": 18, "name": "PlayStation 4" } },
-        { "platform": { "id": 1, "name": "Xbox One" } }
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } },
+        { "platform": { "id": 3, "name": "Xbox" } }
       ],
-      "esrb_rating": { "id": 4, "name": "Mature" },
-      "description_raw": "Red Dead Redemption 2 is an action-adventure game developed by Rockstar Games. The game follows the story of Arthur Morgan."
+      "description_raw": "A reboot of the Tomb Raider franchise that tells the origin story of Lara Croft."
     },
     {
-      "id": 58175,
-      "name": "God of War (2018)",
-      "slug": "god-of-war-2",
-      "released": "2018-04-20",
-      "background_image": "https://media.rawg.io/media/games/4be/4be6a6ad0364751a96229c56bf69be59.jpg",
-      "rating": 4.58,
-      "metacritic": 94,
-      "playtime": 12,
-      "genres": [
-        { "id": 4, "name": "Action" },
-        { "id": 3, "name": "Adventure" },
-        { "id": 5, "name": "RPG" }
-      ],
-      "parent_platforms": [
-        { "platform": { "id": 4, "name": "PC" } },
-        { "platform": { "id": 18, "name": "PlayStation 4" } }
-      ],
-      "esrb_rating": { "id": 4, "name": "Mature" },
-      "description_raw": "God of War is an action-adventure game developed by Santa Monica Studio for the PlayStation 4."
-    },
-    {
-      "id": 326243,
-      "name": "Elden Ring",
-      "slug": "elden-ring",
-      "released": "2022-02-25",
-      "background_image": "https://media.rawg.io/media/games/b29/b294fdd866dcdb643e7bab370a552855.jpg",
-      "rating": 4.45,
+      "id": 28,
+      "name": "Red Dead Redemption 2",
+      "released": "2018-10-26",
+      "background_image": "https://media.rawg.io/media/games/511/5118aff5091cb3efec399c808f8c598f.jpg",
+      "rating": 4.59,
       "metacritic": 96,
-      "playtime": 56,
       "genres": [
         { "id": 4, "name": "Action" },
+        { "id": 3, "name": "Adventure" }
+      ],
+      "parent_platforms": [
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } },
+        { "platform": { "id": 3, "name": "Xbox" } }
+      ],
+      "description_raw": "America, 1899. Arthur Morgan and the Van der Linde gang are outlaws on the run."
+    },
+    {
+      "id": 4291,
+      "name": "Counter-Strike: Global Offensive",
+      "released": "2012-08-21",
+      "background_image": "https://media.rawg.io/media/games/736/73619bd336c894d6941d926bfd563946.jpg",
+      "rating": 3.57,
+      "metacritic": 83,
+      "genres": [
+        { "id": 4, "name": "Action" },
+        { "id": 2, "name": "Shooter" }
+      ],
+      "parent_platforms": [
+        { "platform": { "id": 1, "name": "PC" } }
+      ],
+      "description_raw": "Counter-Strike: Global Offensive is a multiplayer first-person shooter developed by Valve."
+    },
+    {
+      "id": 802,
+      "name": "Borderlands 2",
+      "released": "2012-09-18",
+      "background_image": "https://media.rawg.io/media/games/49c/49c3dfa4ce2f6f140cc4825868e858cb.jpg",
+      "rating": 4.02,
+      "metacritic": 89,
+      "genres": [
+        { "id": 4, "name": "Action" },
+        { "id": 2, "name": "Shooter" },
         { "id": 5, "name": "RPG" }
       ],
       "parent_platforms": [
-        { "platform": { "id": 4, "name": "PC" } },
-        { "platform": { "id": 187, "name": "PlayStation 5" } },
-        { "platform": { "id": 1, "name": "Xbox One" } }
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } },
+        { "platform": { "id": 3, "name": "Xbox" } }
       ],
-      "esrb_rating": { "id": 4, "name": "Mature" },
-      "description_raw": "Elden Ring is an action RPG developed by FromSoftware in collaboration with George R. R. Martin."
+      "description_raw": "Borderlands 2 is a first-person looter shooter set on the planet Pandora."
+    },
+    {
+      "id": 13536,
+      "name": "Portal",
+      "released": "2007-10-09",
+      "background_image": "https://media.rawg.io/media/games/7fa/7fa0b586293c5861ee32490e953a4571.jpg",
+      "rating": 4.51,
+      "metacritic": 90,
+      "genres": [
+        { "id": 7, "name": "Puzzle" },
+        { "id": 3, "name": "Adventure" }
+      ],
+      "parent_platforms": [
+        { "platform": { "id": 1, "name": "PC" } }
+      ],
+      "description_raw": "Portal is a new single player game from Valve using the Source Engine."
     }
   ],
-  "upcomingGames": [
+  "upcoming": [
     {
-      "id": 999001,
-      "name": "Sample Upcoming Game 1",
-      "slug": "sample-upcoming-1",
+      "id": 100001,
+      "name": "Upcoming Game 1",
       "released": "2026-06-15",
-      "background_image": "https://via.placeholder.com/600x400?text=Upcoming+Game",
+      "background_image": "https://via.placeholder.com/600x400?text=Upcoming+Game+1",
       "rating": null,
-      "metacritic": null,
-      "genres": [{ "id": 4, "name": "Action" }],
-      "parent_platforms": [{ "platform": { "id": 4, "name": "PC" } }]
+      "genres": [
+        { "id": 4, "name": "Action" }
+      ],
+      "parent_platforms": [
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 2, "name": "PlayStation" } }
+      ]
     },
     {
-      "id": 999002,
-      "name": "Sample Upcoming Game 2",
-      "slug": "sample-upcoming-2",
+      "id": 100002,
+      "name": "Upcoming Game 2",
       "released": "2026-08-20",
-      "background_image": "https://via.placeholder.com/600x400?text=Upcoming+Game",
+      "background_image": "https://via.placeholder.com/600x400?text=Upcoming+Game+2",
       "rating": null,
-      "metacritic": null,
-      "genres": [{ "id": 5, "name": "RPG" }],
-      "parent_platforms": [{ "platform": { "id": 187, "name": "PlayStation 5" } }]
-    }
-  ],
-  "sampleWishlist": [
-    {
-      "id": 3328,
-      "name": "The Witcher 3: Wild Hunt",
-      "background_image": "https://media.rawg.io/media/games/618/618c2031a07bbff6b4f611f10b6f2f85.jpg"
-    },
-    {
-      "id": 326243,
-      "name": "Elden Ring",
-      "background_image": "https://media.rawg.io/media/games/b29/b294fdd866dcdb643e7bab370a552855.jpg"
+      "genres": [
+        { "id": 5, "name": "RPG" }
+      ],
+      "parent_platforms": [
+        { "platform": { "id": 1, "name": "PC" } },
+        { "platform": { "id": 3, "name": "Xbox" } }
+      ]
     }
   ]
 }

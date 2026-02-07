@@ -1,0 +1,41 @@
+# ============================================
+# Render Blueprint -- Game Store Library
+# ============================================
+# Deploy: push to your repo and Render auto-deploys.
+# Docs:   https://docs.render.com/blueprint-spec
+# ============================================
+
+services:
+  # ---------- Web Service (Express API + Static Frontend) ----------
+  - type: web
+    name: game-store-library
+    runtime: node
+    region: oregon
+
+    # Root directory of the service inside the repo
+    rootDir: wdd330
+
+    # Build: install deps for both frontend & server, then Vite build
+    buildCommand: npm run render-build
+
+    # Start the Express server (serves API + static dist/)
+    startCommand: npm start
+
+    plan: free
+
+    # Environment variables — set secret values in the Render dashboard
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: IGDB_CLIENT_ID
+        sync: false          # set manually in Render dashboard
+      - key: IGDB_CLIENT_SECRET
+        sync: false          # set manually in Render dashboard
+
+    # Health-check path so Render knows the service is alive
+    healthCheckPath: /health
+
+    # Auto-deploy on every push to the default branch
+    autoDeploy: yes

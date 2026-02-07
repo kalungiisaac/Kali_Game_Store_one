@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Store Library - Browse Games</title>
-    <link rel="stylesheet" href="./css/responsive.css">
     <link rel="stylesheet" href="./css/styles.css">
+    <link rel="stylesheet" href="./css/responsive.css">
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎮</text></svg>">
 </head>
 <body id="index-page">
-    <!-- Dynamic header will be inserted here -->
+    <!-- Header -->
     <div id="header-placeholder"></div>
 
     <main class="container">
@@ -18,12 +18,11 @@
             <div class="featured-bg" id="featured-bg"></div>
             <div class="featured-overlay"></div>
             <div class="featured-content">
-                <h2>FEATURED GAME: <span id="featured-title">[Game Title]</span></h2>
-                <p id="featured-platforms">Available Now on Android, ios, PC, PS, Xbox</p>
+                <h2>FEATURED GAME: <span id="featured-title">Loading...</span></h2>
+                <p id="featured-platforms">Loading platforms...</p>
                 <div class="featured-buttons">
                     <a href="#" id="featured-link" class="btn">LEARN MORE</a>
                     <button class="btn btn-trailer" id="featured-trailer">▶ WATCH TRAILER</button>
-                    <button class="btn btn-secondary" id="featured-download">DOWNLOAD</button>
                 </div>
             </div>
         </section>
@@ -31,21 +30,11 @@
         <div class="main-content">
             <!-- Sidebar Filters -->
             <aside class="filter-panel">
-                <h3>CATEGORIES</h3>
+                <h3>FILTERS</h3>
+                
                 <div class="filter-group">
                     <h4>PLATFORMS</h4>
                     <div id="platform-filters"></div>
-                </div>
-                
-                <div class="filter-group">
-                    <h4>PRICE RANGE</h4>
-                    <div class="price-range">
-                        <label><input type="checkbox" value="pc"> PC</label>
-                        <div class="range-inputs">
-                            <input type="number" id="min-price" placeholder="Min" min="0">
-                            <input type="number" id="max-price" placeholder="Max" min="0">
-                        </div>
-                    </div>
                 </div>
 
                 <div class="filter-group">
@@ -71,31 +60,35 @@
 
             <!-- Main Games Content -->
             <div class="games-content">
-                <!-- New Releases Section -->
+                <!-- Popular Games Section -->
                 <section class="games-section">
-                    <h2>NEW RELEASES</h2>
-                    <div class="games-grid" id="new-releases-container">
-                        <!-- New releases will be loaded here -->
+                    <div class="section-header">
+                        <h2>🔥 POPULAR GAMES</h2>
+                        <span id="games-count" class="games-count"></span>
+                    </div>
+                    <div class="games-grid" id="games-container"></div>
+                    
+                    <!-- Pagination -->
+                    <div class="pagination" id="pagination">
+                        <button class="page-btn" id="prev-page" disabled>← Previous</button>
+                        <div class="page-numbers" id="page-numbers"></div>
+                        <button class="page-btn" id="next-page">Next →</button>
                     </div>
                 </section>
 
-                <!-- Promo Banner -->
-                <div class="promo-banner">
-                    <p>🎉 LIMITED TIME OFFER: Get 20% off all indie games!</p>
-                </div>
-
-                <!-- Popular Games Section -->
+                <!-- Upcoming Releases Section -->
                 <section class="games-section">
-                    <h2>POPULAR GAMES</h2>
-                    <div class="games-grid" id="games-container">
-                        <!-- Popular games will be loaded here -->
+                    <div class="section-header">
+                        <h2>📅 UPCOMING RELEASES</h2>
+                        <a href="upcoming.html" class="see-all-link">See All →</a>
                     </div>
+                    <div class="games-grid" id="upcoming-container"></div>
                 </section>
             </div>
         </div>
     </main>
 
-    <!-- Dynamic footer will be inserted here -->
+    <!-- Footer -->
     <div id="footer-placeholder"></div>
 
     <!-- Trailer Modal -->
@@ -103,9 +96,7 @@
         <div class="trailer-modal-content">
             <button class="trailer-close" id="trailer-close">&times;</button>
             <div class="trailer-title" id="trailer-title">Game Trailer</div>
-            <div class="trailer-video-container" id="trailer-container">
-                <!-- Video will be loaded here -->
-            </div>
+            <div class="trailer-video-container" id="trailer-container"></div>
         </div>
     </div>
 

@@ -38,10 +38,10 @@
 
             <!-- Right Side - Game Info -->
             <div class="game-info-panel">
-                <h1 id="game-title">GAME TITLE</h1>
+                <h1 id="game-title">Loading...</h1>
                 <p class="developer-info">
-                    Developer: <span id="developer">[Studio Name]</span> | 
-                    Publisher: <span id="publisher">[Publisher Name]</span>
+                    Developer: <span id="developer">Loading...</span> | 
+                    Publisher: <span id="publisher">Loading...</span>
                 </p>
                 
                 <div class="game-description" id="game-description">
@@ -54,7 +54,7 @@
                 <h3>GAME DETAILS</h3>
                 <div class="action-buttons">
                     <button class="btn btn-primary download-btn" id="download-btn">
-                        DOWNLOAD | Size: <span id="game-size">[XX]</span>GB
+                        DETAILS | Playtime: <span id="game-size">--</span>
                     </button>
                     <button id="wishlist-btn" class="btn btn-secondary wishlist-btn">
                         ADD TO WISHLIST
@@ -64,10 +64,10 @@
                 <div class="game-specs">
                     <h4>SYSTEM REQUIREMENTS</h4>
                     <ul class="specs-list">
-                        <li><strong>Genre:</strong> <span id="genres">Action, RPG</span></li>
-                        <li><strong>Release Date:</strong> <span id="release-date">[Date]</span></li>
-                        <li><strong>Platforms:</strong> <span id="platforms">[Platforms]</span></li>
-                        <li><strong>Rating:</strong> <span id="rating">[Rating]</span></li>
+                        <li><strong>Genre:</strong> <span id="genres">Loading...</span></li>
+                        <li><strong>Release Date:</strong> <span id="release-date">Loading...</span></li>
+                        <li><strong>Platforms:</strong> <span id="platforms">Loading...</span></li>
+                        <li><strong>Rating:</strong> <span id="rating">Loading...</span></li>
                         <li><strong>OS:</strong> Windows 10/11</li>
                     </ul>
                 </div>
@@ -95,6 +95,19 @@
     </main>
 
     <div id="footer-placeholder"></div>
+
+    <!-- Screenshot Modal -->
+    <div id="screenshot-modal" class="screenshot-modal">
+        <div class="screenshot-modal-content">
+            <button class="screenshot-close" id="screenshot-close">&times;</button>
+            <button class="screenshot-nav-btn prev" id="modal-prev">&#10094;</button>
+            <img id="modal-screenshot" src="" alt="Screenshot">
+            <button class="screenshot-nav-btn next" id="modal-next">&#10095;</button>
+            <div class="screenshot-counter">
+                <span id="screenshot-current">1</span> / <span id="screenshot-total">5</span>
+            </div>
+        </div>
+    </div>
 
     <script type="module" src="js/main.js"></script>
 </body>

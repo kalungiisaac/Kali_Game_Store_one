@@ -1,6 +1,6 @@
 // ui.js
 
-// Render games grid (standard view)
+// Render games grid (standard view — with buttons)
 export function renderGames(games, containerId) {
     const container = document.getElementById(containerId);
     if (!container) return;
@@ -19,26 +19,34 @@ export function renderGames(games, containerId) {
         <article class="game-card" 
                  data-id="${game.id}" 
                  data-name="${game.name}" 
-                 data-image="${game.background_image || ''}"
-                 onclick="window.location.href='game-details.html?id=${game.id}'">
+                 data-image="${game.background_image || ''}">
             <div class="wishlist-icon">
                 <span class="heart" title="Add to Wishlist">♥</span>
             </div>
-            <img src="${game.background_image || 'https://via.placeholder.com/300x200?text=GAME+COVER+ART'}" 
-                 alt="${game.name}" 
-                 class="game-cover"
-                 loading="lazy">
+            <div class="card-image-wrapper">
+                <button class="watch-trailer-btn" onclick="event.stopPropagation(); window.openTrailer('${(game.name || '').replace(/'/g, "\\'")}')">
+                    ▶ Trailer
+                </button>
+                <img src="${game.background_image || 'https://via.placeholder.com/300x200?text=No+Image'}" 
+                     alt="${game.name || 'Game'}" 
+                     class="game-cover"
+                     loading="lazy"
+                     onclick="window.location.href='game-details.html?id=${game.id}'">
+            </div>
             <div class="game-info">
-                <h3 class="game-title">${game.name}</h3>
+                <h3 class="game-title">${game.name || 'Unknown'}</h3>
                 <div class="game-meta">
                     <span class="release-date">${game.released ? new Date(game.released).toLocaleDateString() : 'TBA'}</span>
                     <span class="rating">${game.rating ? `⭐ ${game.rating.toFixed(1)}` : 'No rating'}</span>
                 </div>
                 <div class="platforms">
-                    ${game.parent_platforms?.slice(0, 3).map(p => 
-                        `<span class="platform">${p.platform.name}</span>`
-                    ).join('') || ''}
+                    ${(game.parent_platforms || []).slice(0, 3).map(p => 
+                        `<span class="platform">${p?.platform?.name || ''}</span>`
+                    ).join('')}
                 </div>
+                <button class="btn download-btn" onclick="event.stopPropagation(); window.location.href='game-details.html?id=${game.id}'">
+                    VIEW DETAILS
+                </button>
             </div>
         </article>
     `).join('');
@@ -66,8 +74,6 @@ export function renderGamesWithDownload(games, containerId) {
     const sortedGames = [...games].sort((a, b) => (b.rating || 0) - (a.rating || 0));
     
     container.innerHTML = sortedGames.map(game => {
-        // Generate random size between 10-50GB for demo
-        const gameSize = Math.floor(Math.random() * 40) + 10;
         return `
             <article class="game-card wireframe-card" 
                      data-id="${game.id}" 
@@ -77,7 +83,7 @@ export function renderGamesWithDownload(games, containerId) {
                     <button class="watch-trailer-btn" data-game-name="${game.name}" onclick="event.stopPropagation(); window.openTrailer('${game.name.replace(/'/g, "\\'")}')">
                         ▶ Trailer
                     </button>
-                    <img src="${game.background_image || 'https://via.placeholder.com/200x150?text=GAME+COVER+ART'}" 
+                    <img src="${game.background_image || 'https://via.placeholder.com/200x150?text=No+Image'}" 
                          alt="${game.name}" 
                          class="game-cover"
                          loading="lazy"
@@ -85,10 +91,10 @@ export function renderGamesWithDownload(games, containerId) {
                 </div>
                 <div class="card-content">
                     <h4 class="card-title">${game.name}</h4>
-                    <p class="card-platform">${game.parent_platforms?.[0]?.platform?.name || 'PC'} ⭐ ${game.rating?.toFixed(1) || 'N/A'}</p>
-                    <p class="card-size">Size: [${gameSize}GB]</p>
+                    <p class="card-platform">${game.parent_platforms?.[0]?.platform?.name || 'Multi-Platform'} ⭐ ${game.rating?.toFixed(1) || 'N/A'}</p>
+                    <p class="card-meta">${game.released ? new Date(game.released).toLocaleDateString() : 'TBA'}${game.metacritic ? ` | Metacritic: ${game.metacritic}` : ''}</p>
                     <button class="btn download-btn" onclick="event.stopPropagation(); window.location.href='game-details.html?id=${game.id}'">
-                        DOWNLOAD
+                        VIEW DETAILS
                     </button>
                 </div>
             </article>
@@ -216,19 +222,19 @@ export function renderGameDetails(game) {
     // Update cover/hero image
     const coverEl = document.getElementById('game-cover');
     if (coverEl) {
-        coverEl.src = game.background_image || 'https://via.placeholder.com/600x300?text=GAME+HERO+IMAGE';
+        coverEl.src = game.background_image || 'https://via.placeholder.com/600x300?text=No+Image';
     }
     
-    // Update game size (random for demo)
+    // Update game size using playtime data
     const sizeEl = document.getElementById('game-size');
     if (sizeEl) {
-        sizeEl.textContent = Math.floor(Math.random() * 50) + 10;
+        sizeEl.textContent = game.playtime ? `${game.playtime}h playtime` : '--';
     }
     
     // Update genres
     const genresEl = document.getElementById('genres');
     if (genresEl) {
-        genresEl.textContent = game.genres?.map(g => g.name).join(', ') || 'Action, RPG';
+        genresEl.textContent = game.genres?.map(g => g.name).join(', ') || 'N/A';
     }
     
     // Update release date
@@ -244,7 +250,7 @@ export function renderGameDetails(game) {
     if (platformsEl) {
         const platforms = game.platforms?.map(p => p.platform?.name || p.name).join(', ') || 
                          game.parent_platforms?.map(p => p.platform.name).join(', ') || 
-                         'PC, PlayStation, Xbox';
+                         'N/A';
         platformsEl.textContent = platforms;
     }
     

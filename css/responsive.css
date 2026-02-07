@@ -1,10 +1,23 @@
 /* Responsive Design - Media Queries */
 /* Mobile First Approach */
 
-/* Tablet and up */
-@media (min-width: 768px) {
+/* Mobile - 1 card per row */
+@media (max-width: 767px) {
+  .games-grid,
+  .deals-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Tablet - 2 cards per row */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .games-grid,
+  .deals-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
   .container {
-    padding: 0 3rem;
+    padding: 0 2rem;
   }
   
   .search-container {
@@ -12,18 +25,19 @@
   }
 }
 
-/* Desktop and up */
+/* Desktop and up - 3 cards per row */
 @media (min-width: 1024px) {
-  .games-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  .games-grid,
+  .deals-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
   
   .filter-panel {
     width: 280px;
   }
   
-  .games-grid {
-    margin-left: 310px;
+  .container {
+    padding: 0 3rem;
   }
 }
 
@@ -32,21 +46,12 @@
   .filter-panel {
     width: 300px;
   }
-  
-  .games-grid {
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    margin-left: 330px;
-  }
 }
 
 /* Hide filter panel on mobile */
 @media (max-width: 767px) {
   .filter-panel {
     display: none;
-  }
-  
-  .games-grid {
-    margin-left: 0;
   }
   
   .game-detail .game-header {
