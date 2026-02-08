@@ -4,7 +4,7 @@ import api from './api.js';
 class GameComparison {
     constructor() {
         this.slots = [null, null, null];
-        this.maxSlots = 3;
+        this.maxSlots = 4;
     }
 
     // Add game to comparison

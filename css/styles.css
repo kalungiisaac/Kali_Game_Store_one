@@ -929,6 +929,12 @@ main {
   display: block;
 }
 
+.logo-icon{
+  border-radius: -50%;
+  height: 100px;
+  width:100px;
+
+}
 /* Screenshot Modal */
 .screenshot-modal {
   display: none;
