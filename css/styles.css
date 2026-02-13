@@ -149,7 +149,7 @@ img {
 
 .logo-text small {
   font-weight: normal;
-  color: rgba(255, 255, 255, 0.5);
+  color: #ffffff;
 }
 
 .main-nav {
@@ -158,7 +158,7 @@ img {
 }
 
 .nav-link {
-  color: rgba(255, 255, 255, 0.75);
+  color: #ffffff;
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 600;
@@ -231,7 +231,7 @@ img {
 }
 
 #search-input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
 }
 
 #search-btn {
@@ -256,7 +256,7 @@ img {
 .icon-link {
   text-decoration: none;
   font-size: 1.1rem;
-  color: rgba(255, 255, 255, 0.8);
+  color: #ffffff;
   transition: var(--transition);
 }
 
@@ -308,7 +308,7 @@ img {
   width: 10px;
   height: 10px;
   border-radius: 50%;
-  background: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.6);
   cursor: pointer;
   transition: background-color 0.1s linear;
 }
@@ -343,7 +343,7 @@ img {
 }
 
 .featured-content p {
-  color: #ddd;
+  color: #ffffff;
   margin-bottom: 1.5rem;
   font-size: 1rem;
 }
@@ -354,37 +354,37 @@ img {
 }
 
 .featured-buttons .btn {
-  background: white;
-  color: #333;
-  border: 2px solid white;
+  background: #000203;
+  color: white;
+  border: 2px solid #000203;
   font-weight: bold;
 }
 
 .featured-buttons .btn:hover {
-  background: transparent;
+  background: #1a1a2e;
   color: white;
 }
 
 .featured-buttons .btn-secondary {
-  background: transparent;
+  background: #000203;
   color: white;
-  border: 2px solid white;
+  border: 2px solid #000203;
 }
 
 .featured-buttons .btn-secondary:hover {
-  background: white;
-  color: #333;
+  background: #1a1a2e;
+  color: white;
 }
 
 .featured-buttons .btn-trailer {
-  background: #e94560;
+  background: #000203;
   color: white;
-  border: 2px solid #e94560;
+  border: 2px solid #000203;
 }
 
 .featured-buttons .btn-trailer:hover {
-  background: #ff6b6b;
-  border-color: #ff6b6b;
+  background: #1a1a2e;
+  border-color: #1a1a2e;
 }
 
 /* Main Content Layout */
@@ -442,7 +442,7 @@ img {
 
 .deals-label {
   font-size: 0.75rem;
-  color: rgba(255,255,255,0.5);
+  color: #ffffff;
   font-style: italic;
 }
 
@@ -495,13 +495,13 @@ img {
 .game-card .game-info .game-meta,
 .game-card .card-content .card-platform,
 .game-card .card-content .card-meta {
-  color: #ccc;
+  color: #ffffff;
 }
 
 .game-card .game-info .platform,
 .game-card .card-content .platform {
-  background: rgba(255,255,255,0.15);
-  color: #ddd;
+  background: rgba(255,255,255,0.25);
+  color: #ffffff;
 }
 
 /* Image wrapper for standard cards */
@@ -537,9 +537,9 @@ img {
   margin-top: 0.6rem;
   padding: 0.6rem;
   font-size: 0.9rem;
-  background: var(--accent);
-  color: #fff;
-  border-color: var(--accent);
+  background: #000203;
+  color: white;
+  border-color: #000203;
   border-radius: 6px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -548,9 +548,9 @@ img {
 
 .game-info .download-btn:hover,
 .card-content .download-btn:hover {
-  background: #ff6b6b;
-  border-color: #ff6b6b;
-  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4);
+  background: #1a1a2e;
+  border-color: #1a1a2e;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
 }
 
 /* Wireframe Style Game Card */
@@ -591,13 +591,13 @@ img {
 
 .wireframe-card .card-platform {
   font-size: 0.9rem;
-  color: #666;
+  color: #ffffff;
   margin-bottom: 0.4rem;
 }
 
 .wireframe-card .card-meta {
   font-size: 0.85rem;
-  color: #888;
+  color: #ffffff;
   margin-bottom: 0.6rem;
 }
 
@@ -638,7 +638,7 @@ img {
   display: flex;
   justify-content: space-between;
   font-size: 0.9rem;
-  color: #666;
+  color: #ffffff;
   margin: 0.4rem 0;
 }
 
@@ -685,9 +685,9 @@ img {
 .btn {
   display: inline-block;
   padding: 0.6rem 1.2rem;
-  background: white;
-  color: var(--text);
-  border: 2px solid var(--border);
+  background: #000203;
+  color: white;
+  border: 2px solid #000203;
   border-radius: 4px;
   cursor: pointer;
   transition: var(--transition);
@@ -696,28 +696,28 @@ img {
 }
 
 .btn:hover {
-  background: var(--primary);
+  background: #1a1a2e;
   color: white;
-  border-color: var(--primary);
+  border-color: #1a1a2e;
 }
 
 .btn-primary {
-  background: var(--primary);
+  background: #000203;
   color: white;
-  border-color: var(--primary);
+  border-color: #000203;
 }
 
 .btn-primary:hover {
-  background: #2a2a4e;
+  background: #1a1a2e;
 }
 
 .btn-secondary {
-  background: white;
-  color: var(--text);
+  background: #000203;
+  color: white;
 }
 
 .btn-secondary:hover {
-  background: #f0f0f0;
+  background: #1a1a2e;
 }
 
 .wishlist-btn {
@@ -888,9 +888,9 @@ main {
 }
 
 .page-btn {
-  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  background: #000203;
   color: white;
-  border: 2px solid var(--accent);
+  border: 2px solid #000203;
   padding: 0.75rem 1.5rem;
   border-radius: 8px;
   cursor: pointer;
@@ -899,7 +899,7 @@ main {
 }
 
 .page-btn:hover:not(:disabled) {
-  background: var(--accent);
+  background: #1a1a2e;
   transform: translateY(-2px);
 }
 
@@ -916,9 +916,9 @@ main {
 }
 
 .page-num {
-  background: rgba(255,255,255,0.1);
+  background: #000203;
   color: white;
-  border: 1px solid rgba(255,255,255,0.2);
+  border: 1px solid #000203;
   width: 40px;
   height: 40px;
   border-radius: 8px;
@@ -931,18 +931,18 @@ main {
 }
 
 .page-num:hover {
-  background: rgba(255,255,255,0.2);
-  border-color: var(--accent);
+  background: #1a1a2e;
+  border-color: #1a1a2e;
 }
 
 .page-num.active {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: #1a1a2e;
+  border-color: #1a1a2e;
   color: white;
 }
 
 .page-ellipsis {
-  color: rgba(255,255,255,0.5);
+  color: #ffffff;
   padding: 0 0.5rem;
   font-weight: bold;
 }
@@ -1213,7 +1213,7 @@ main {
 }
 
 .screenshot-nav-btn:hover {
-  background: rgba(255,255,255,0.3);
+  background: rgba(255,255,255,0.5);
 }
 
 .screenshot-nav-btn.prev {
@@ -1260,7 +1260,7 @@ main {
   display: block;
   width: 100%;
   margin-top: 1rem;
-  background: #ff4444;
+  background: #000203;
   color: white;
   border: none;
   padding: 0.5rem;
@@ -1269,12 +1269,12 @@ main {
 }
 
 .remove-btn:hover {
-  background: #e60000;
+  background: #1a1a2e;
 }
 
 /* Page titles and descriptions */
 .page-description {
-  color: #666;
+  color: #ffffff;
   margin-bottom: 2rem;
   font-size: 1.1rem;
 }
@@ -1340,7 +1340,7 @@ main {
 }
 
 .error-container p {
-  color: #666;
+  color: #000000;
   margin-bottom: 1rem;
 }
 
@@ -1360,7 +1360,7 @@ main {
 }
 
 .loading p {
-  color: #ccc;
+  color: #ffffff;
   font-size: 1rem;
 }
 
@@ -1380,7 +1380,7 @@ main {
 /* Footer Styles */
 .footer {
   background: linear-gradient(135deg, #0a0a1a 0%, #1a1a2e 50%, #16213e 100%);
-  color: #d0d0e0;
+  color: #ffffff;
   padding: 2.5rem 0 1rem;
   margin-top: 3rem;
   border-top: 1px solid rgba(233, 69, 96, 0.2);
@@ -1427,7 +1427,7 @@ main {
 }
 
 .footer-section ul li a {
-  color: rgba(255, 255, 255, 0.55);
+  color: #ffffff;
   text-decoration: none;
   font-size: 0.9rem;
   transition: var(--transition);
@@ -1518,7 +1518,7 @@ main {
 }
 
 .newsletter input::placeholder {
-  color: rgba(255, 255, 255, 0.4);
+  color: #ffffff;
 }
 
 .newsletter input:focus {
@@ -1528,18 +1528,19 @@ main {
 }
 
 .newsletter .btn {
-  background: linear-gradient(135deg, #e94560, #a855f7);
+  background: #000203;
   color: white;
   border: none;
   border-radius: 8px;
   font-weight: 600;
   transition: background-color 0.1s linear;
-  box-shadow: 0 4px 15px rgba(233, 69, 96, 0.3);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
 }
 
 .newsletter .btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(233, 69, 96, 0.5);
+  background: #1a1a2e;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
 }
 
 .footer-bottom {
@@ -1547,7 +1548,7 @@ main {
   padding-top: 1rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.35);
+  color: #ffffff;
 }
 
 /* Trailer Modal */
@@ -1648,7 +1649,7 @@ main {
   display: inline-block;
   margin-top: 1rem;
   padding: 0.8rem 2rem;
-  background: #e94560;
+  background: #000203;
   color: white;
   text-decoration: none;
   border-radius: 8px;
@@ -1657,7 +1658,7 @@ main {
 }
 
 .trailer-fallback a:hover {
-  background: #ff6b6b;
+  background: #1a1a2e;
   transform: scale(1.05);
 }
 
@@ -1685,7 +1686,7 @@ main {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background: rgba(233, 69, 96, 0.9);
+  background: #000203;
   color: white;
   border: none;
   padding: 0.6rem 1rem;
@@ -1706,7 +1707,7 @@ main {
 }
 
 .watch-trailer-btn:hover {
-  background: #ff6b6b;
+  background: #1a1a2e;
   transform: translate(-50%, -50%) scale(1.1);
 }
 
@@ -1742,14 +1743,14 @@ p {
 }
 
 .meta {
-  color: #666;
+  color: #ffffff;
   font-size: 0.9rem;
   margin-bottom: 0.5rem;
 }
 
 .rating {
   font-weight: bold;
-  color: var(--secondary);
+  color: #ffffff;
 }
 
 /* ==========================================
@@ -1837,7 +1838,7 @@ p {
 
 .original-price {
   text-decoration: line-through;
-  color: #999;
+  color: #000000;
   font-size: 0.9rem;
 }
 
@@ -1851,7 +1852,7 @@ p {
   display: flex;
   justify-content: space-between;
   font-size: 0.85rem;
-  color: #666;
+  color: #000000;
   margin-bottom: 1rem;
 }
 
@@ -1875,9 +1876,9 @@ p {
 
 .category-btn {
   padding: 0.5rem 1rem;
-  border: 2px solid var(--primary);
+  border: 2px solid #000203;
   background: white;
-  color: var(--primary);
+  color: #000203;
   border-radius: 20px;
   cursor: pointer;
   transition: var(--transition);
@@ -1886,7 +1887,7 @@ p {
 
 .category-btn:hover,
 .category-btn.active {
-  background: var(--primary);
+  background: #000203;
   color: white;
 }
 
@@ -1913,7 +1914,7 @@ p {
 
 .free-game-card .game-desc {
   font-size: 0.85rem;
-  color: #666;
+  color: #000000;
   margin: 0.5rem 0 1rem;
   line-height: 1.4;
 }
@@ -1986,7 +1987,7 @@ p {
 .btn-small {
   padding: 0.4rem 0.8rem;
   font-size: 0.85rem;
-  background: var(--primary);
+  background: #000203;
   color: white;
   border: none;
   border-radius: 4px;
@@ -1994,7 +1995,7 @@ p {
 }
 
 .btn-small:hover {
-  background: var(--secondary);
+  background: #1a1a2e;
 }
 
 .comparison-slots {
@@ -2018,7 +2019,7 @@ p {
   align-items: center;
   justify-content: center;
   height: 200px;
-  color: #999;
+  color: #000000;
   cursor: pointer;
   transition: var(--transition);
 }
@@ -2051,7 +2052,7 @@ p {
 .slot-filled .slot-rating {
   padding: 0 0.8rem 0.8rem;
   margin: 0;
-  color: #666;
+  color: #000000;
   font-size: 0.9rem;
 }
 
