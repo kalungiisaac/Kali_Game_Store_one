@@ -26,7 +26,7 @@
   background: #fff;
   border-radius: 2px;
   margin: 3px auto;
-  transition: all 0.3s ease;
+  transition: transform 0.1s linear;
 }
 
 .hamburger.active span:nth-child(1) {
@@ -654,5 +654,54 @@
 @media (min-width: 1200px) {
   .filter-panel {
     width: 300px;
+  }
+}
+
+/* Performance Optimizations */
+/* Reduce rendering cost for off-screen game cards */
+.game-card {
+  content-visibility: auto;
+  contain-intrinsic-size: 200px 300px;
+}
+
+.games-grid > .game-card:nth-child(n+13) {
+  content-visibility: auto;
+}
+
+/* Respect user's motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .spinner,
+  .trailer-spinner {
+    animation: none;
+    border-top-color: var(--accent);
+  }
+  
+  .circle {
+    animation: none;
+  }
+}
+
+/* Optimize loading screen */
+@media (max-width: 767px) {
+  .loading-screen {
+    background: linear-gradient(135deg, #1a1a2e 0%, #0f3460 100%);
+  }
+  
+  .circle {
+    width: 14px;
+    height: 14px;
+  }
+  
+  .loader-text {
+    font-size: 1rem;
+    letter-spacing: 3px;
   }
 }

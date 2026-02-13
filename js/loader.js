@@ -1,5 +1,5 @@
 // loader.js - Optimized for performance
-const MIN_DISPLAY = 800; // ms - faster loading screen
+const MIN_DISPLAY = 400; // ms - ultra-fast loading screen
 const start = performance.now?.() ?? Date.now();
 
 window.addEventListener('load', () => {
@@ -13,11 +13,11 @@ window.addEventListener('load', () => {
     screen.classList.add('fade-out');
     const handler = () => screen.parentNode && screen.remove();
     screen.addEventListener('transitionend', handler, { once: true });
-    setTimeout(handler, 600); // Fallback
+    setTimeout(handler, 250); // Fallback - matches 0.2s transition
   }, remaining);
 
   // Load decorative animations after page is ready
   setTimeout(() => {
     document.documentElement.classList.add('animations-enabled');
-  }, 1000);
+  }, 600);
 });
