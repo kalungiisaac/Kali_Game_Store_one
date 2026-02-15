@@ -153,16 +153,14 @@ export function renderWishlist(wishlistItems) {
                          loading="lazy">
                     <div class="game-info">
                         <h3 class="game-title">${game.name}</h3>
-                        <div style="display: flex; gap: 0.5rem;">
+                        <div class="wishlist-buttons-container">
                             <button class="btn btn-secondary" 
-                                    onclick="event.stopPropagation(); window.openTrailer(${game.id}, '${game.name.replace(/'/g, "\\'")}');"
-                                    style="flex: 1;">
+                                    onclick="event.stopPropagation(); window.openTrailer(${game.id}, '${game.name.replace(/'/g, "\\'")}');">
                                 🎬 Trailer
                             </button>
                             <button class="btn btn-secondary remove-btn" 
                                     data-id="${game.id}"
-                                    onclick="event.stopPropagation();"
-                                    style="flex: 1;">
+                                    onclick="event.stopPropagation();">
                                 Remove
                             </button>
                         </div>

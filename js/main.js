@@ -196,9 +196,9 @@ function showLoading(containerId, message = 'Loading...') {
 function showError(containerId, error) {
     const el = document.getElementById(containerId);
     if (el) el.innerHTML = `
-        <div class="error-container" style="text-align:center; padding:2rem; background:rgba(255,255,255,0.05); border-radius:8px; border:1px solid rgba(233,69,96,0.3);">
-            <p style="color:#ff6b6b; font-size:1rem; margin-bottom:0.8rem;">⚠️ Could not load this section</p>
-            <button class="btn" onclick="location.reload()" style="padding:0.5rem 1.5rem;">🔄 Retry</button>
+        <div class="error-container error-section">
+            <p>⚠️ Could not load this section</p>
+            <button class="btn" onclick="location.reload()">🔄 Retry</button>
         </div>`;
 }
 
@@ -212,9 +212,9 @@ async function loadSection(containerId, fetchFn, renderFn) {
         } else {
             const el = document.getElementById(containerId);
             if (el) el.innerHTML = `
-                <div class="empty-state" style="text-align:center; padding:2rem; background:rgba(255,255,255,0.05); border-radius:8px;">
-                    <p style="color:rgba(255,255,255,0.6);">No games found for this section right now.</p>
-                    <button class="btn btn-secondary" onclick="location.reload()" style="margin-top:0.5rem;">Retry</button>
+                <div class="empty-state empty-section">
+                    <p>No games found for this section right now.</p>
+                    <button class="btn btn-secondary" onclick="location.reload()">Retry</button>
                 </div>`;
         }
     } catch (err) {
